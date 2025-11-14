@@ -1,43 +1,46 @@
-const cds = require('@sap/cds');
+const cds =require('@sap/cds');
 const { SELECT } = require('@sap/cds/lib/ql/cds-ql');
-
  
-module.exports = cds.service.impl(function(){
+module.exports=cds.service.impl(function(){
     const {employee} = this.entities;
  
-this.before('CREATE', employee, (req) => {
-        const { salaryAmount, currencyCode } = req.data;
-        console.log(salaryAmount)
-        if( salaryAmount > 50000 && currencyCode !== 'USD' ) 
-        req.error(400,"Employee’s salary must be less than 50000 USD");
+    this.before('CREATE',employee,req=>{
+        if(req.data.salaryAmount > 50000 && req.data.Currency_code != "USD"){
+            req.reject(400,'Employee’s salary must be less than 50000 USD')
+        }
+    })
+    this.after('CREATE',employee,async req=>{
+        console.log("Creation Sucessful")
     })
  
-    this.on('CREATE', employee, async (req) => {
-        console.log(req.data)
-        const res = await INSERT.into(employee).entries(req.data);
-        console.log("Create operation successful");
+    this.before('UPDATE',employee,async req=>{
+        const name = req.data.nameFirst
+        const login = req.data.loginName
+        const id = req.data.ID
+        const obj= await SELECT.one.from(employee).where({ID:id})
+        console.log(name,login)
+        console.log(obj.nameFirst,obj.loginName)
+       
+        if( name != obj.nameFirst || login != obj.loginName){
+        req.reject(400,'Operation not Allowed')
+    }
+    if (req.data.salaryAmount < 50000 && req.data.Currency_code == "USD"){
+            req.reject(400,'Operation not Allowed')
+        }
+    })
+    this.after('UPDATE',employee,req=>{
+        console.log("Updation Successful")
     })
  
-   
-    this.before('UPDATE', employee, (req) => {
-        const { salaryAmount, currencyCode } = req.data;
-        if( salaryAmount > 50000 && currencyCode !== 'USD' ) req.reject({message: "employee's salary must be less than 50000 USD"});
-        if( req.data.nameFirst || req.data.loginName ) req.reject({message: "Operation not allowed"});
+    this.before('DELETE',employee,async req=>{
+        const id =req.data.ID
+        const obj= await SELECT.one.from(employee).where({ID:id})
+ 
+        if (obj.nameFirst[0] == "S"){
+            req.reject(400,"Cannot delete")
+        }
     })
- 
-    this.on('UPDATE', employee, (req) => {
-        console.log("Update operation successful");
+    this.after('DELETE',employee,req=>{
+        console.log("Deletion Successful")
     })
- 
- 
-    this.before('DELETE', employee, async (req) => {
-        const {ID} = req.data;
-        console.log(ID)
-        const EMP = await SELECT.one.from(employee).where({ID});
-        console.log(EMP)
-        const {nameFirst} = EMP;
-        console.log(nameFirst);
-        if(nameFirst[0] === 'S') req.reject({message: 'Cannot be deleted'});
-    })
-})
- 
+});

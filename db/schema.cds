@@ -8,14 +8,14 @@ entity employee : cuid {
     nameMiddle      : String(40);
     nameLast        : String(40);
     nameInitials    : String(40);
-    gender          : common.Gender;
+    gender          : common.gender;
     language        : String(1);
-    phoneNumber     : common.PhoneNumber;
-    email           : common.Email;
+    phoneNumber     : common.phoneNumber;
+    email           : common.email;
     loginName       : String(12);
     currency        : Currency;
     salaryAmount    : Decimal(10,2);
     accountNumber   : String(16);
-    bankId          : String(8);
+    bankId          : String(20);
     bankName        : String(64);
 }
