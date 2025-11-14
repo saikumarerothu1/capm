@@ -1,0 +1,75 @@
+@server=http://localhost:4004
+@username=alice
+@password=
+
+
+### employee
+# @name employee_GET
+GET {{server}}/odata/v4/employee/employee
+Authorization: Basic {{username}}:{{password}}
+
+
+### employee
+# @name employee_POST
+POST {{server}}/odata/v4/employee/employee
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "nameFirst": "nameFirst-9365161",
+  "nameMiddle": "nameMiddle-9365161",
+  "nameLast": "nameLast-9365161",
+  "nameInitials": "nameInitials-9365161",
+  "gender": "U",
+  "language": "1",
+  "phoneNumber": "+918374390896",
+  "email": "cs@gmail.com",
+  "loginName": "Name-9365161",
+  "currency": {
+    "code": "EUR"
+  },
+  "salaryAmount": 2500.22,
+  "accountNumber": "ntNumber-9365161",
+  "bankId": "-9365161",
+  "bankName": "bankName-9365161"
+}
+
+
+### employee
+# @name employee_PATCH
+PATCH {{server}}/odata/v4/employee/employee/4d9f2bc5-0470-480f-8547-0ca0dfbd37df
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "ID": "4d9f2bc5-0470-480f-8547-0ca0dfbd37df",
+  "nameFirst": "Name-9365161",
+  "nameMiddle": "nameMiddle-9365161",
+  "nameLast": "nameLast-9365161",
+  "nameInitials": "nameInitials-9365161",
+  "gender": "U",
+  "language": "1",
+  "phoneNumber": "+918374390896",
+  "email": "cs@gmail.com",
+  "loginName": "Name-9365161",
+  "currency": {
+    "code": "278"
+  },
+  "salaryAmount": 4500.22,
+  "accountNumber": "ntNumber-9365161",
+  "bankId": "-9365161",
+  "bankName": "bankName-9365161"
+}
+
+
+### employee
+# @name employee_DELETE
+DELETE {{server}}/odata/v4/employee/employee/93651618-97c5-44dd-8149-ab984562b280
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+
+### Currencies
+# @name Currencies_GET
+GET {{server}}/odata/v4/employee/Currencies
+Authorization: Basic {{username}}:{{password}}
